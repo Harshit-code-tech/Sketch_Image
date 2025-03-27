@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SketchAI - ML Sketch Translator</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='ml_model.css') }}">
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <div class="logo-icon">S</div>
+            <span>SketchAI</span>
+        </div>
+        <!-- Add this inside the header element in index.html -->
+        <div class="theme-toggle" id="theme-toggle">
+            <div class="theme-toggle-icon">
+                <svg id="light-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="5"></circle>
+                    <line x1="12" y1="1" x2="12" y2="3"></line>
+                    <line x1="12" y1="21" x2="12" y2="23"></line>
+                    <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                    <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                    <line x1="1" y1="12" x2="3" y2="12"></line>
+                    <line x1="21" y1="12" x2="23" y2="12"></line>
+                    <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                    <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                </svg>
+                <svg id="dark-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none;">
+                    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                </svg>
+            </div>
+            <span class="theme-toggle-text" id="theme-text">Dark Mode</span>
+        </div>
+    </header>
+
+    <main>
+        <div class="container">
+                <!-- Decorative elements -->
+            <div class="decorative-circle circle-1"></div>
+            <div class="decorative-circle circle-2"></div>
+            <form id="sketch-form" action="/generate" method="post" enctype="multipart/form-data" onsubmit="return false;">
+                <!-- Frame 1: Sketch Upload -->
+
+                <label for="sketch-upload" class="frame active" id="frame-1">
+                    <div class="frame-header">
+                        <h2>ML Model Sketch Translator</h2>
+                        <p>Transform your sketches into realistic images with our AI models</p>
+                    </div>
+                    <div class="frame-content">
+                        <div class="upload-area" id="upload-area">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                            </svg>
+                            <h3>Upload Your Sketch</h3>
+                            <p>Drag and drop your sketch file here or click to browse</p>
+                            <p>Supported formats: JPG, PNG, JPEG(Max 5MB)</p>
+                            <input type="file" id="sketch-upload" name="file" accept=".jpg,.jpeg,.png">
+                            <img src="{{ url_for('static', filename='placeholder/400/320') }}" alt="Preview" class="preview-image" id="preview-image">
+                        </div>
+                    </div>
+                    <div class="buttons">
+                        <div></div>
+                        <button type="button" class="btn btn-primary" id="next-1">Next <span>→</span></button>
+                    </div>
+                </label>
+
+                <!-- Frame 2: Model Selection -->
+                <div class="frame" id="frame-2">
+                    <div class="frame-header">
+                        <h2>Select Translation Model</h2>
+                        <p>Choose the AI model that best fits your sketch content</p>
+                    </div>
+                    <div class="frame-content">
+                        <div class="model-grid">
+                            <div class="model-card" data-model="shoes">
+                                <div class="icon">👟</div>
+                                <h3>Shoes</h3>
+                                <p>Transforms sketches into photorealistic shoes with precise detail</p>
+                            </div>
+                            <div class="model-card" data-model="flowers">
+                                <div class="icon">🌸</div>
+                                <h3>Flowers</h3>
+                                <p>Renders beautiful flower species with natural textures and colors</p>
+                            </div>
+                            <div class="model-card" data-model="birds">
+                                <div class="icon">🦜</div>
+                                <h3>Birds</h3>
+                                <p>Creates lifelike birds with accurate plumage and anatomical details</p>
+                            </div>
+                            <div class="model-card" data-model="cats">
+                                <div class="icon">🐱</div>
+                                <h3>Cats</h3>
+                                <p>Transforms sketches into adorable and realistic feline companions</p>
+                            </div>
+                            <div class="model-card" data-model="faces">
+                                <div class="icon">👤</div>
+                                <h3>Human Face</h3>
+                                <p>Generates photorealistic human faces with natural expressions</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="buttons">
+                        <button type="button" class="btn btn-outline" id="back-2"><span>←</span> Back</button>
+                        <button type="button" class="btn btn-primary" id="next-2">Next <span>→</span></button>
+                    </div>
+                </div>
+
+                <!-- Frame 3: Translate -->
+                <div class="frame" id="frame-3">
+                    <div class="frame-header">
+                        <h2>Translating Your Sketch</h2>
+                        <p>Our AI models are working their magic</p>
+                    </div>
+                    <div class="frame-content">
+                        <div class="translation-progress">
+                            <div class="progress-bar">
+                                <div class="progress-fill" id="progress-fill"></div>
+                            </div>
+                            <div class="spinner"></div>
+                            <h3 id="progress-status">Processing your sketch...</h3>
+                            <div class="progress-steps">
+                                <div class="progress-step">
+                                    <div class="step-icon active">1</div>
+                                    <div class="step-label">Analyzing</div>
+                                </div>
+                                <div class="progress-step">
+                                    <div class="step-icon">2</div>
+                                    <div class="step-label">Processing</div>
+                                </div>
+                                <div class="progress-step">
+                                    <div class="step-icon">3</div>
+                                    <div class="step-label">Refining</div>
+                                </div>
+                                <div class="progress-step">
+                                    <div class="step-icon">4</div>
+                                    <div class="step-label">Finalizing</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="buttons">
+                        <button type="button" class="btn btn-secondary" id="start-over-3">Start Over</button>
+                        <div></div>
+                    </div>
+                </div>
+
+                <!-- Frame 4: Output -->
+                <div class="frame" id="frame-4">
+                    <div class="frame-header">
+                        <h2>Translation Complete</h2>
+                        <p>Here's your transformed sketch, ready to download</p>
+                    </div>
+                    <div class="frame-content">
+                        <div class="output-container">
+                            <div class="output-image-container">
+                                <img src="{{ url_for('static', filename='placeholder/400/320') }}" alt="Translated image" class="output-image" id="output-image">
+                            </div>
+                            <div class="output-details">
+                                <div class="output-stats">
+                                    <div class="stat-item">
+                                        <div class="stat-label">Translation Model</div>
+                                        <div class="stat-value" id="output-model">Human Face</div>
+                                    </div>
+                                    <div class="stat-item">
+                                        <div class="stat-label">Processing Time</div>
+                                        <div class="stat-value">14.4 seconds</div>
+                                    </div>
+                                    <div class="stat-item">
+                                        <div class="stat-label">Image Resolution</div>
+                                        <div class="stat-value">254 × 254 px</div>
+                                    </div>
+                                    <div class="stat-item">
+                                        <div class="stat-label">AI Confidence</div>
+                                        <div class="stat-value">44.7%</div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="comparison-toggle">
+                                        <label for="comparison-toggle">Compare with Original</label>
+                                        <label class="toggle-switch">
+                                            <input type="checkbox" id="comparison-toggle">
+                                            <span class="toggle-slider"></span>
+                                        </label>
+                                    </div>
+                                    <h3>Download Options</h3>
+                                    <div class="download-options">
+                                        <a href="#" id="download-png" class="btn btn-outline">PNG</a>
+                                        <a href="#" id="download-jpg" class="btn btn-outline">JPG</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="buttons">
+                        <button type="button" class="btn btn-secondary" id="start-over-4">Start Over</button>
+                        <button type="button" class="btn btn-primary" id="download-all">Download All Files</button>
+                    </div>
+                </div>
+                <input type="hidden" name="model" id="selected-model">
+            </form>
+        </div>
+    </main>
+
+    <footer>
+        © 2025 SketchAI - ML Model Sketch Translator | All Rights Reserved
+    </footer>
+
+    <script src="{{ url_for('static', filename='ml_model.js') }}"></script>
+</body>
+</html>
