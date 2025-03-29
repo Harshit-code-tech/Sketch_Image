@@ -5,8 +5,7 @@ This is an interactive web application that allows users to generate realistic i
 (score is pretty low.. because of limited resources)
 
 
-<video controls src="background/sketch_image.mp4" title="Title"></video>
-
+[Sketch_Image.mp4](https://github.com/user-attachments/assets/31d9649a-fe35-4db3-b330-4776e2bd33d3)<video controls src="background/sketch_image.mp4" title="Title"></video>
 
 ## Features
 - **Sketch Upload:** Users can upload their sketches via drag-and-drop or file input.
