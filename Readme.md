@@ -2,7 +2,7 @@
 
 ## Overview
 This is an interactive web application that allows users to generate realistic images from sketches using a Pix2Pix deep learning model. The app is built using Flask for the backend and JavaScript for the frontend, enabling real-time sketch-to-image translation.
-
+(score is pretty low.. because of limited resources)
 ## Features
 - **Sketch Upload:** Users can upload their sketches via drag-and-drop or file input.
 - **Model Selection:** Choose between different Pix2Pix models trained on various datasets.
